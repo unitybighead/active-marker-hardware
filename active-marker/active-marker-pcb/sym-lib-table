@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "active-marker")(type "KiCad")(uri "${KIPRJMOD}/active-marker.kicad_sym")(options "")(descr ""))
+)
