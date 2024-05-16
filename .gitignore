@@ -1,0 +1,4 @@
+# KiCad
+*.bak
+*-backups
+*gerber
