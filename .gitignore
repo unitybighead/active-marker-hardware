@@ -1,4 +1,5 @@
 # KiCad
 *.bak
+*.zip
 *-backups
 *gerber
