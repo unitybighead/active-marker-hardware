@@ -1,0 +1,7 @@
+../Core/Src/VEML6030.c:16:9:VEML6030_init	32	static
+../Core/Src/VEML6030.c:27:7:VEML6030_getLux	40	static
+../Core/Src/VEML6030.c:40:7:VEML6030_getGain	32	static
+../Core/Src/VEML6030.c:54:10:VEML6030_getIntTime	40	static
+../Core/Src/VEML6030.c:68:10:VEML6030_getALS	16	static
+../Core/Src/VEML6030.c:78:5:VEML6030_readWord	40	static
+../Core/Src/VEML6030.c:91:9:VEML6030_readBit	16	static
