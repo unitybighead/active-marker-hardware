@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <stdlib.h>
+#include <malloc.h>
 #include "user_func.h"
 #include "VEML6030.h"
 /* USER CODE END Includes */
@@ -95,13 +95,13 @@ int main(void) {
   MX_USART2_UART_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  if (VEML6030_init(&hi2c1, SENS_ADDR_0) != HAL_OK) {
+  if (VEML6030_init(&hi2c1, SENS_ADDR_1) != HAL_OK) {
     Error_Handler();
   }
   float *cycle_basis = calloc(sizeof(float), CYCLE_LAST);
   uint32_t *cycle_old = calloc(sizeof(float), CYCLE_LAST);
   cycle_basis[CYCLE_MAIN] = 1000 / 60;
-  cycle_basis[CYCLE_SENSOR] = VEML6030_getIntTime(SENS_ADDR_0);
+  cycle_basis[CYCLE_SENSOR] = VEML6030_getIntTime(SENS_ADDR_1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -109,9 +109,9 @@ int main(void) {
   while (1) {
     i++;
     if (CycleController(CYCLE_SENSOR, cycle_basis, cycle_old)) {
-      g_lux = VEML6030_getLux(SENS_ADDR_0);
+      g_lux = VEML6030_getLux(SENS_ADDR_1);
     }
-    while (CycleController(CYCLE_MAIN, cycle_basis, cycle_old)) {
+    while (!CycleController(CYCLE_MAIN, cycle_basis, cycle_old)) {
       ;
     }
     /* USER CODE END WHILE */

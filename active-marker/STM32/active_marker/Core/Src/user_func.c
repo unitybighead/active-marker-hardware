@@ -16,7 +16,7 @@ bool CycleController(int data, float *basis, uint32_t *old) {
     old[data] = HAL_GetTick();
   }
   uint32_t current = HAL_GetTick();
-  if (current - old[data] > 0) {
+  if (current - (float)old[data] > basis[data]) {
     old[data] = current;
     return 1;
   } else {

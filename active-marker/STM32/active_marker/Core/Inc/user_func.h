@@ -10,6 +10,7 @@
 
 #include "main.h"
 #include "stdbool.h"
+#include "malloc.h"
 
 bool CycleController(int data, float *basis, uint32_t *old);
 

@@ -31,13 +31,13 @@ VEML6030 VEML;
 void setup() {
   M5setup();
   if (VEML.begin(SENSOR_ADDR, 0, 26)) {
-    M5.Lcd.setCursor(0, 50);
+    M5.Lcd.setCursor(0, 20);
     M5.Lcd.println("I2C setup error!");
   }
 
   M5.Lcd.setCursor(0, 0);
   M5.Lcd.printf("VEML6030 Tester");
-  M5.Lcd.setCursor(0, 30);
+  M5.Lcd.setCursor(0, 40);
   M5.Lcd.printf("Illuminance [lx]");
 }
 
@@ -45,11 +45,12 @@ void loop() {
   M5.update();
   //VEML.AutoRange();
   CycleController();
-  M5.Lcd.setCursor(0, 50);
+  M5.Lcd.setCursor(0, 60);
   float lux = VEML.GetLux();
   M5.Lcd.printf("%4.2f\n", lux);
   if (M5.BtnA.pressedFor(1000)) {
     //reboot after one second;
+    M5.Lcd.setCursor(100, 60);
     M5.Lcd.printf("Reset");
     esp_deep_sleep(500);
   }
