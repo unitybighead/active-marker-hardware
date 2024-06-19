@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <malloc.h>
+#include "active_marker.h"
 #include "neopixel_spi.h"
 #include "user_func.h"
 /* USER CODE END Includes */
@@ -115,8 +116,9 @@ int main(void) {
     RGB_buf[0].r = i % 255;
     RGB_buf[0].g = i * i % 255;
     RGB_buf[0].b = i * i * i % 255;
-    NeoPixel_Send(RGB_buf);
+//    NeoPixel_Send(RGB_buf);
 //    NeoPixel_FullBright();
+    setPattern(8,1);
     while (!CycleController(CYCLE_MAIN, cycle_basis, cycle_old)) {
       HAL_Delay(1);
     }

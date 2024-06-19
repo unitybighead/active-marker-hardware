@@ -38,14 +38,14 @@ void NeoPixel_Send(RGB RGB_buf[]) {
   uint8_t *send_buf = (uint8_t*) calloc(sizeof(uint8_t), N * 24);
   NeoPixel_Serialize(RGB_buf, send_buf);
   NeoPixel_Reset();
-  HAL_SPI_Transmit_DMA(hspi, send_buf, N * 24);
+  HAL_SPI_Transmit(hspi, send_buf, N * 24,50);
   free(send_buf);
 }
 
 void NeoPixel_Reset() {
   uint8_t buf = NP_RESET;
   for (int i = 0; i < 100; i++) {
-    HAL_SPI_Transmit_DMA(hspi, &buf, 1);
+    HAL_SPI_Transmit(hspi, &buf, 1,50);
   }
 }
 

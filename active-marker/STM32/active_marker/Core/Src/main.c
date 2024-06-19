@@ -29,7 +29,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 typedef enum {
-  CYCLE_MAIN, CYCLE_SENSOR, CYCLE_LAST
+  CYCLE_MAIN, CYCLE_SENSOR, CYCLE_PATTERN, CYCLE_LAST
 } Cycle_enum;
 /* USER CODE END PTD */
 
@@ -46,6 +46,8 @@ typedef enum {
 CAN_HandleTypeDef hcan;
 
 I2C_HandleTypeDef hi2c1;
+
+IWDG_HandleTypeDef hiwdg;
 
 SPI_HandleTypeDef hspi1;
 DMA_HandleTypeDef hdma_spi1_tx;
@@ -64,6 +66,7 @@ static void MX_SPI1_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_CAN_Init(void);
 static void MX_I2C1_Init(void);
+static void MX_IWDG_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -105,6 +108,7 @@ int main(void) {
   MX_USART1_UART_Init();
   MX_CAN_Init();
   MX_I2C1_Init();
+  MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
   VEML6030_init(&hi2c1, SENS_ADDR_0);
   VEML6030_init(&hi2c1, SENS_ADDR_1);
@@ -112,10 +116,11 @@ int main(void) {
 
   uint8_t ID, ID_past = 0xFF;
   uint8_t color, color_past = 0xFF;
-  //setup cycle
+//setup cycle
   float *cycle_basis = calloc(CYCLE_LAST, sizeof(float));
   uint32_t *cycle_old = calloc(CYCLE_LAST, sizeof(uint32_t));
-  cycle_basis[CYCLE_MAIN] = 1000 / 60;
+  cycle_basis[CYCLE_MAIN] = 50;
+  cycle_basis[CYCLE_PATTERN] = 100;
   cycle_basis[CYCLE_SENSOR] = VEML6030_getIntTime(SENS_ADDR_0);
   /* USER CODE END 2 */
 
@@ -125,14 +130,23 @@ int main(void) {
     // NeoPixel_FullBright();
     ID = getID_Rotary();
     color = getColor();
-    if (ID != ID_past || color != color_past) {
+    if ((ID != ID_past || color != color_past)
+        && CycleController(CYCLE_PATTERN, cycle_basis, cycle_old)) {
       ID_past = ID;
       color_past = color;
+      /*
+       * Since data transfer to the first LED may fail,
+       * the same output process is repeated.
+       */
+      setPattern(ID, color);
+      HAL_Delay(10);
       setPattern(ID, color);
     }
+
     while (!CycleController(CYCLE_MAIN, cycle_basis, cycle_old)) {
       HAL_Delay(1);
     }
+    HAL_IWDG_Refresh(&hiwdg);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -156,11 +170,12 @@ void SystemClock_Config(void) {
    * in the RCC_OscInitTypeDef structure.
    */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI
-      | RCC_OSCILLATORTYPE_HSE;
+      | RCC_OSCILLATORTYPE_LSI | RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV8;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL13;
@@ -181,7 +196,7 @@ void SystemClock_Config(void) {
     Error_Handler();
   }
   PeriphClkInit.PeriphClockSelection =
-      RCC_PERIPHCLK_USART1 | RCC_PERIPHCLK_I2C1;
+  RCC_PERIPHCLK_USART1 | RCC_PERIPHCLK_I2C1;
   PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK1;
   PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_HSI;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
@@ -269,6 +284,33 @@ static void MX_I2C1_Init(void) {
 }
 
 /**
+ * @brief IWDG Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_IWDG_Init(void) {
+
+  /* USER CODE BEGIN IWDG_Init 0 */
+
+  /* USER CODE END IWDG_Init 0 */
+
+  /* USER CODE BEGIN IWDG_Init 1 */
+
+  /* USER CODE END IWDG_Init 1 */
+  hiwdg.Instance = IWDG;
+  hiwdg.Init.Prescaler = IWDG_PRESCALER_8;
+  hiwdg.Init.Window = 4095;
+  hiwdg.Init.Reload = 4095;
+  if (HAL_IWDG_Init(&hiwdg) != HAL_OK) {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN IWDG_Init 2 */
+
+  /* USER CODE END IWDG_Init 2 */
+
+}
+
+/**
  * @brief SPI1 Initialization Function
  * @param None
  * @retval None
@@ -296,7 +338,7 @@ static void MX_SPI1_Init(void) {
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
   hspi1.Init.CRCPolynomial = 7;
   hspi1.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  hspi1.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  hspi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
   if (HAL_SPI_Init(&hspi1) != HAL_OK) {
     Error_Handler();
   }

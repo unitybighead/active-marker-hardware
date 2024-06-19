@@ -13,7 +13,6 @@ void NeoPixel_Init(SPI_HandleTypeDef *p_hspi) {
 }
 
 void NeoPixel_FullOff() {
-  // reset: >= 80 us
   RGB RGBbuf[N];
   for (int i = 0; i < N; i++) {
     RGBbuf[i].r = 0;
@@ -33,14 +32,13 @@ void NeoPixel_FullBright() {
   NeoPixel_Send(RGB_buf);
 }
 
-void NeoPixel_Send(RGB* RGB_buf) {
+void NeoPixel_Send(RGB RGB_buf[]) {
 
-  uint8_t *send_buf = (uint8_t*) calloc(N * 24, sizeof(uint8_t));
+  uint8_t *send_buf = (uint8_t*) calloc(sizeof(uint8_t), N * 24);
   NeoPixel_Serialize(RGB_buf, send_buf);
   NeoPixel_Reset();
-  if(HAL_SPI_Transmit_DMA(hspi, send_buf, N * 24)!= HAL_OK){
-    Error_Handler();
-  }
+  HAL_Delay(10);
+  HAL_SPI_Transmit_DMA(hspi, send_buf, N * 24);
   free(send_buf);
 }
 
