@@ -1,4 +1,6 @@
-../Core/Src/active_marker.c:49:6:getMode	1
-../Core/Src/active_marker.c:53:9:getID_Rotary	4
-../Core/Src/active_marker.c:62:9:getColor	1
-../Core/Src/active_marker.c:66:6:setPattern	2
+../Core/Src/active_marker.c:65:5:getMode	1
+../Core/Src/active_marker.c:69:9:getID	6
+../Core/Src/active_marker.c:87:9:getColor	3
+../Core/Src/active_marker.c:106:6:setPattern	2
+../Core/Src/active_marker.c:123:6:Uart_Init	1
+../Core/Src/active_marker.c:128:6:HAL_UART_RxCpltCallback	7

@@ -22,9 +22,9 @@
  * (+-0.15 us for each)
 */
 
-#define NP_HIGH 0b11110000
-#define NP_LOW 0b11000000
-#define NP_RESET 0b00000000
+#define NP_HIGH   0b11110000
+#define NP_LOW    0b11000000
+#define NP_RESET  0b00000000
 #define N 5
 
 typedef struct{
