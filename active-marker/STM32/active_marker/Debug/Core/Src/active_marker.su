@@ -1,3 +1,4 @@
-../Core/Src/active_marker.c:56:9:getID_Rotary	16	static
-../Core/Src/active_marker.c:65:9:getColor	8	static
-../Core/Src/active_marker.c:69:6:setPattern	32	static
+../Core/Src/active_marker.c:49:6:getMode	8	static
+../Core/Src/active_marker.c:53:9:getID_Rotary	16	static
+../Core/Src/active_marker.c:62:9:getColor	8	static
+../Core/Src/active_marker.c:66:6:setPattern	32	static

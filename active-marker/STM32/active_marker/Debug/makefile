@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (10.3-2021.10)
+# Toolchain: GNU Tools for STM32 (12.3.rel1)
 ################################################################################
 
 -include ../makefile.init
@@ -60,8 +60,8 @@ all: main-build
 main-build: active_marker.elf secondary-outputs
 
 # Tool invocations
-active_marker.elf active_marker.map: $(OBJS) $(USER_OBJS) C:\Users\harub\Documents\robocup\active-marker\active-marker\STM32\active_marker\STM32F303K6TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "active_marker.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\harub\Documents\robocup\active-marker\active-marker\STM32\active_marker\STM32F303K6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="active_marker.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+active_marker.elf active_marker.map: $(OBJS) $(USER_OBJS) C:\Users\harub\Documents\active-marker\active-marker\STM32\active_marker\STM32F303K6TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "active_marker.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\harub\Documents\active-marker\active-marker\STM32\active_marker\STM32F303K6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="active_marker.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

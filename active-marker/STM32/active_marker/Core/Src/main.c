@@ -114,8 +114,8 @@ int main(void) {
   VEML6030_init(&hi2c1, SENS_ADDR_1);
   NeoPixel_Init(&hspi1);
 
-  uint8_t ID, ID_past = 0xFF;
-  uint8_t color, color_past = 0xFF;
+  uint8_t ID, ID_past = 0x00;
+  uint8_t color, color_past = 0x00;
 //setup cycle
   float *cycle_basis = calloc(CYCLE_LAST, sizeof(float));
   uint32_t *cycle_old = calloc(CYCLE_LAST, sizeof(uint32_t));
@@ -127,9 +127,10 @@ int main(void) {
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1) {
-    // NeoPixel_FullBright();
-    ID = getID_Rotary();
-    color = getColor();
+    if (getMode() == MODE_MEMORY) {
+      ID = getID_Rotary();
+      color = getColor();
+    }
     if ((ID != ID_past || color != color_past)
         && CycleController(CYCLE_PATTERN, cycle_basis, cycle_old)) {
       ID_past = ID;
@@ -159,12 +160,9 @@ int main(void) {
  * @retval None
  */
 void SystemClock_Config(void) {
-  RCC_OscInitTypeDef RCC_OscInitStruct =
-    { 0 };
-  RCC_ClkInitTypeDef RCC_ClkInitStruct =
-    { 0 };
-  RCC_PeriphCLKInitTypeDef PeriphClkInit =
-    { 0 };
+  RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = { 0 };
 
   /** Initializes the RCC Oscillators according to the specified parameters
    * in the RCC_OscInitTypeDef structure.
@@ -196,7 +194,7 @@ void SystemClock_Config(void) {
     Error_Handler();
   }
   PeriphClkInit.PeriphClockSelection =
-  RCC_PERIPHCLK_USART1 | RCC_PERIPHCLK_I2C1;
+      RCC_PERIPHCLK_USART1 | RCC_PERIPHCLK_I2C1;
   PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK1;
   PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_HSI;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
@@ -338,7 +336,7 @@ static void MX_SPI1_Init(void) {
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
   hspi1.Init.CRCPolynomial = 7;
   hspi1.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  hspi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
+  hspi1.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
   if (HAL_SPI_Init(&hspi1) != HAL_OK) {
     Error_Handler();
   }
@@ -402,8 +400,7 @@ static void MX_DMA_Init(void) {
  * @retval None
  */
 static void MX_GPIO_Init(void) {
-  GPIO_InitTypeDef GPIO_InitStruct =
-    { 0 };
+  GPIO_InitTypeDef GPIO_InitStruct = { 0 };
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOF_CLK_ENABLE();
@@ -413,9 +410,9 @@ static void MX_GPIO_Init(void) {
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(USER_LED_GPIO_Port, USER_LED_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : USER_SEL_Pin COLOR_Pin USER_BTN1_Pin USER_BTN2_Pin
+  /*Configure GPIO pins : MODE_Pin COLOR_Pin USER_BTN1_Pin USER_BTN2_Pin
    ID4_Pin */
-  GPIO_InitStruct.Pin = USER_SEL_Pin | COLOR_Pin | USER_BTN1_Pin | USER_BTN2_Pin
+  GPIO_InitStruct.Pin = MODE_Pin | COLOR_Pin | USER_BTN1_Pin | USER_BTN2_Pin
       | ID4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;

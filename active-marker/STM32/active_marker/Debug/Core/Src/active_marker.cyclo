@@ -1,0 +1,4 @@
+../Core/Src/active_marker.c:49:6:getMode	1
+../Core/Src/active_marker.c:53:9:getID_Rotary	4
+../Core/Src/active_marker.c:62:9:getColor	1
+../Core/Src/active_marker.c:66:6:setPattern	2

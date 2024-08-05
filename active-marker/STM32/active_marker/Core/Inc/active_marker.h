@@ -10,9 +10,13 @@
 
 #include "main.h"
 #include "neopixel_spi.h"
+#include <stdbool.h>
 
 #define BLUE 0
 #define YELLOW 1
+#define MODE_MEMORY false
+#define MODE_UART true
+
 typedef struct {
   RGB dot0;
   RGB dot1;
@@ -24,6 +28,11 @@ typedef struct {
  * 0     1
  *    4
  *  2   3
+ */
+/*color define {R,G,B}
+ * 0     3
+ *
+ *  1   2
  */
 extern const RGB COLOR_BLUE;
 extern const RGB COLOR_YELLOW ;
@@ -49,6 +58,7 @@ extern const DotPattern PATTERN_15;
 extern const DotPattern* PATTERN_ADDR[];
 
 uint8_t getID_Rotary(void);
+bool getMode(void);
 uint8_t getColor(void);
 void setPattern(uint8_t ID,uint8_t color);
 #endif /* INC_ACTIVE_MARKER_H_ */
