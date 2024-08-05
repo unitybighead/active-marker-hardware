@@ -63,16 +63,21 @@ uint8_t getColor(void) {
   return HAL_GPIO_ReadPin(COLOR_GPIO_Port, COLOR_Pin);
 }
 
+
+/* 0     4
+ *    2
+ *  1   3
+ */
 void setPattern(uint8_t ID, uint8_t color) {
   RGB pattern[5];
   pattern[0] = PATTERN_ADDR[ID]->dot0;
   pattern[1] = PATTERN_ADDR[ID]->dot1;
-  pattern[2] = PATTERN_ADDR[ID]->dot2;
-  pattern[3] = PATTERN_ADDR[ID]->dot3;
+  pattern[3] = PATTERN_ADDR[ID]->dot2;
+  pattern[4] = PATTERN_ADDR[ID]->dot3;
   if (color == BLUE) {
-    pattern[4] = COLOR_BLUE;
+    pattern[2] = COLOR_BLUE;
   } else {
-    pattern[4] = COLOR_YELLOW;
+    pattern[2] = COLOR_YELLOW;
   }
   NeoPixel_Send(pattern);
 }
