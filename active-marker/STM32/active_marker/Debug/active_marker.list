@@ -1102,9 +1102,9 @@ static void MX_SPI1_Init(void)
  80007cc:	4b07      	ldr	r3, [pc, #28]	@ (80007ec <MX_SPI1_Init+0x74>)
  80007ce:	2200      	movs	r2, #0
  80007d0:	631a      	str	r2, [r3, #48]	@ 0x30
-  hspi1.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  hspi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
  80007d2:	4b06      	ldr	r3, [pc, #24]	@ (80007ec <MX_SPI1_Init+0x74>)
- 80007d4:	2208      	movs	r2, #8
+ 80007d4:	2200      	movs	r2, #0
  80007d6:	635a      	str	r2, [r3, #52]	@ 0x34
   if (HAL_SPI_Init(&hspi1) != HAL_OK)
  80007d8:	4804      	ldr	r0, [pc, #16]	@ (80007ec <MX_SPI1_Init+0x74>)
