@@ -115,13 +115,13 @@ int main(void)
 //  VEML6030_init(&hi2c1, SENS_ADDR_1);
   NeoPixel_Init(&hspi1);
   Uart_Init(&huart1);
-  uint8_t ID, ID_past = 0x00;
-  uint8_t color, color_past = 0x00;
+  uint8_t ID;
+  uint8_t color;
 //setup cycle
   float *cycle_basis = calloc(CYCLE_LAST, sizeof(float));
   uint32_t *cycle_old = calloc(CYCLE_LAST, sizeof(uint32_t));
   cycle_basis[CYCLE_MAIN] = 50;
-  cycle_basis[CYCLE_PATTERN] = 100;
+  cycle_basis[CYCLE_PATTERN] = 1000;
 //  cycle_basis[CYCLE_SENSOR] = VEML6030_getIntTime(SENS_ADDR_0);
   /* USER CODE END 2 */
 
@@ -130,10 +130,9 @@ int main(void)
   while (1) {
     ID = getID();
     color = getColor();
-    if ((ID != ID_past || color != color_past)
-        && CycleController(CYCLE_PATTERN, cycle_basis, cycle_old)) {
-      ID_past = ID;
-      color_past = color;
+//    if ((ID != ID_past || color != color_past)
+//        && CycleController(CYCLE_PATTERN, cycle_basis, cycle_old)) {
+    if(CycleController(CYCLE_PATTERN, cycle_basis, cycle_old)){
       /*
        * Since data transfer to the first LED may fail,
        * the same output process is repeated.

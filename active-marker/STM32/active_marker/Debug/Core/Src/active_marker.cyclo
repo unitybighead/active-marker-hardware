@@ -3,4 +3,4 @@
 ../Core/Src/active_marker.c:87:9:getColor	3
 ../Core/Src/active_marker.c:106:6:setPattern	2
 ../Core/Src/active_marker.c:123:6:Uart_Init	1
-../Core/Src/active_marker.c:128:6:HAL_UART_RxCpltCallback	7
+../Core/Src/active_marker.c:128:6:HAL_UART_RxCpltCallback	8

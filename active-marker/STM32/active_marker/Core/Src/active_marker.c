@@ -56,11 +56,12 @@ static const DotPattern *PATTERN_ADDR[16] = { &PATTERN_0, &PATTERN_1,
     &PATTERN_14, &PATTERN_15 };
 
 // UART
-static UART_HandleTypeDef*  huart;
+static UART_HandleTypeDef *huart;
 static uint8_t rx_buf[8];
 static const int msg_size = 8;
 static uint8_t ID_uart = 8;
 static uint8_t color_uart = BLUE;
+static uint16_t illuminance_uart = 0;
 
 int getMode(void) {
   return HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin);
@@ -88,10 +89,10 @@ uint8_t getColor(void) {
   uint8_t color;
   switch (getMode()) {
   case MODE_MEMORY:
-    color =  HAL_GPIO_ReadPin(COLOR_GPIO_Port, COLOR_Pin);
+    color = HAL_GPIO_ReadPin(COLOR_GPIO_Port, COLOR_Pin);
     break;
   case MODE_UART:
-    color =  color_uart;
+    color = color_uart;
     break;
   default:
     break;
@@ -126,7 +127,7 @@ void Uart_Init(UART_HandleTypeDef *huart_arg) {
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart_arg) {
-  if (huart_arg == huart) {
+  if (huart_arg == huart && getMode() == MODE_UART) {
     switch (rx_buf[0]) {
     case COMMAND_BLUE:
       color_blue.r = rx_buf[1];
@@ -147,6 +148,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart_arg) {
       color_green.r = rx_buf[1];
       color_green.g = rx_buf[2];
       color_green.b = rx_buf[3];
+      break;
+    case COMMAND_ILLUMINANCE:
+      illuminance_uart = 0;
+      illuminance_uart += (rx_buf[1] << 8) + rx_buf[2];
       break;
     case COMMAND_ID:
       ID_uart = rx_buf[1];
