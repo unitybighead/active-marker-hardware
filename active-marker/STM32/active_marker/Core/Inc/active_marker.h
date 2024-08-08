@@ -9,11 +9,12 @@
 #define INC_ACTIVE_MARKER_H_
 
 #include <string.h>
+#include <stdbool.h>
 #include "main.h"
 #include "neopixel_spi.h"
 
-#define BLUE 0
-#define YELLOW 1
+#define TEAM_COLOR_BLUE true
+#define TEAM_COLOR_YELLOW false
 #define MODE_MEMORY 0
 #define MODE_UART 1
 
@@ -36,7 +37,7 @@ enum Uart_command {
 
 uint8_t getID(void);
 int getMode(void);
-uint8_t getColor(void);
+bool getColor(void);
 void setPattern(uint8_t ID, uint8_t color);
 
 void Uart_Init(UART_HandleTypeDef *huart);

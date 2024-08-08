@@ -60,7 +60,7 @@ static UART_HandleTypeDef *huart;
 static uint8_t rx_buf[8];
 static const int msg_size = 8;
 static uint8_t ID_uart = 8;
-static uint8_t color_uart = BLUE;
+static bool color_uart = TEAM_COLOR_BLUE;
 static uint16_t illuminance_uart = 0;
 
 int getMode(void) {
@@ -75,6 +75,7 @@ uint8_t getID(void) {
     ID |= !(HAL_GPIO_ReadPin(ID2_GPIO_Port, ID2_Pin)) << 1;
     ID |= !(HAL_GPIO_ReadPin(ID4_GPIO_Port, ID4_Pin)) << 2;
     ID |= !(HAL_GPIO_ReadPin(ID8_GPIO_Port, ID8_Pin)) << 3;
+    ID_uart = ID;
     break;
   case MODE_UART:
     ID = ID_uart;
@@ -85,11 +86,12 @@ uint8_t getID(void) {
   return ID;
 }
 
-uint8_t getColor(void) {
-  uint8_t color;
+bool getColor(void) {
+  bool color;
   switch (getMode()) {
   case MODE_MEMORY:
     color = HAL_GPIO_ReadPin(COLOR_GPIO_Port, COLOR_Pin);
+    color_uart = color;
     break;
   case MODE_UART:
     color = color_uart;
@@ -110,7 +112,7 @@ void setPattern(uint8_t ID, uint8_t color) {
   pattern[1] = *(PATTERN_ADDR[ID]->dot1);
   pattern[3] = *(PATTERN_ADDR[ID]->dot2);
   pattern[4] = *(PATTERN_ADDR[ID]->dot3);
-  if (color == BLUE) {
+  if (color == TEAM_COLOR_BLUE) {
     pattern[2] = color_blue;
   } else {
     pattern[2] = color_yellow;

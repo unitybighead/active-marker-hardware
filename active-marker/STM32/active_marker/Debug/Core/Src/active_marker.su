@@ -1,6 +1,6 @@
-../Core/Src/active_marker.c:65:5:getMode	8	static
-../Core/Src/active_marker.c:69:9:getID	16	static
-../Core/Src/active_marker.c:87:9:getColor	16	static
-../Core/Src/active_marker.c:106:6:setPattern	32	static
-../Core/Src/active_marker.c:123:6:Uart_Init	16	static
-../Core/Src/active_marker.c:128:6:HAL_UART_RxCpltCallback	16	static
+../Core/Src/active_marker.c:66:5:getMode	8	static
+../Core/Src/active_marker.c:70:9:getID	16	static
+../Core/Src/active_marker.c:89:6:getColor	16	static
+../Core/Src/active_marker.c:109:6:setPattern	32	static
+../Core/Src/active_marker.c:126:6:Uart_Init	16	static
+../Core/Src/active_marker.c:131:6:HAL_UART_RxCpltCallback	16	static
