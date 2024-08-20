@@ -61,22 +61,27 @@ void Error_Handler(void);
 #define MODE_GPIO_Port GPIOA
 #define COLOR_Pin GPIO_PIN_2
 #define COLOR_GPIO_Port GPIOA
+#define COLOR_EXTI_IRQn EXTI2_TSC_IRQn
 #define USER_VR_Pin GPIO_PIN_3
 #define USER_VR_GPIO_Port GPIOA
 #define USER_BTN1_Pin GPIO_PIN_4
 #define USER_BTN1_GPIO_Port GPIOA
+#define USER_BTN1_EXTI_IRQn EXTI4_IRQn
 #define USER_BTN2_Pin GPIO_PIN_6
 #define USER_BTN2_GPIO_Port GPIOA
+#define USER_BTN2_EXTI_IRQn EXTI9_5_IRQn
 #define USER_LED_Pin GPIO_PIN_1
 #define USER_LED_GPIO_Port GPIOB
 #define ID4_Pin GPIO_PIN_15
 #define ID4_GPIO_Port GPIOA
 #define ID1_Pin GPIO_PIN_3
 #define ID1_GPIO_Port GPIOB
+#define ID1_EXTI_IRQn EXTI3_IRQn
 #define ID8_Pin GPIO_PIN_4
 #define ID8_GPIO_Port GPIOB
 #define ID2_Pin GPIO_PIN_5
 #define ID2_GPIO_Port GPIOB
+#define ID2_EXTI_IRQn EXTI9_5_IRQn
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

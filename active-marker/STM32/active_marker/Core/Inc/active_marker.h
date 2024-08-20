@@ -34,10 +34,12 @@ enum Uart_command {
   COMMAND_ID
 };
 
-
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
 uint8_t getID(void);
 int getMode(void);
 bool getColor(void);
+void setIDSwitch(void);
+void setColorSwitch(void);
 void setPattern(uint8_t ID, uint8_t color);
 
 void Uart_Init(UART_HandleTypeDef *huart);

@@ -59,47 +59,62 @@ static const DotPattern *PATTERN_ADDR[16] = { &PATTERN_0, &PATTERN_1,
 static UART_HandleTypeDef *huart;
 static uint8_t rx_buf[8];
 static const int msg_size = 8;
-static uint8_t ID_uart = 8;
-static bool color_uart = TEAM_COLOR_BLUE;
-static uint16_t illuminance_uart = 0;
+static uint8_t ID = 8;
+static bool color = TEAM_COLOR_BLUE;
+static uint16_t illuminance = 0;
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+  if (getMode() == MODE_MEMORY) {
+    switch (GPIO_Pin) {
+    case ID1_Pin:
+    case ID2_Pin:
+      setIDSwitch();
+      break;
+
+    case COLOR_Pin:
+      setColorSwitch();
+      break;
+
+    case USER_BTN1_Pin:
+      ID++;
+      if (ID > 15) {
+        ID = 0;
+      }
+      break;
+
+    case USER_BTN2_Pin:
+      color = !color;
+      break;
+
+    default:
+      break;
+    }
+  }
+}
 
 int getMode(void) {
   return HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin);
 }
 
 uint8_t getID(void) {
-  uint8_t ID = 0;
-  switch (getMode()) {
-  case MODE_MEMORY:
-    ID |= !(HAL_GPIO_ReadPin(ID1_GPIO_Port, ID1_Pin)) << 0;
-    ID |= !(HAL_GPIO_ReadPin(ID2_GPIO_Port, ID2_Pin)) << 1;
-    ID |= !(HAL_GPIO_ReadPin(ID4_GPIO_Port, ID4_Pin)) << 2;
-    ID |= !(HAL_GPIO_ReadPin(ID8_GPIO_Port, ID8_Pin)) << 3;
-    ID_uart = ID;
-    break;
-  case MODE_UART:
-    ID = ID_uart;
-    break;
-  default:
-    break;
-  }
   return ID;
 }
 
 bool getColor(void) {
-  bool color;
-  switch (getMode()) {
-  case MODE_MEMORY:
-    color = HAL_GPIO_ReadPin(COLOR_GPIO_Port, COLOR_Pin);
-    color_uart = color;
-    break;
-  case MODE_UART:
-    color = color_uart;
-    break;
-  default:
-    break;
-  }
   return color;
+}
+
+void setIDSwitch(void) {
+  // Because of my bad circuit specs......
+  ID = 0;
+  ID |= !(HAL_GPIO_ReadPin(ID1_GPIO_Port, ID1_Pin)) << 0;
+  ID |= !(HAL_GPIO_ReadPin(ID2_GPIO_Port, ID2_Pin)) << 1;
+  ID |= !(HAL_GPIO_ReadPin(ID4_GPIO_Port, ID4_Pin)) << 2;
+  ID |= !(HAL_GPIO_ReadPin(ID8_GPIO_Port, ID8_Pin)) << 3;
+}
+
+void setColorSwitch(void) {
+  color = HAL_GPIO_ReadPin(COLOR_GPIO_Port, COLOR_Pin);
 }
 
 /* 0     4
@@ -117,6 +132,12 @@ void setPattern(uint8_t ID, uint8_t color) {
   } else {
     pattern[2] = color_yellow;
   }
+  /*
+   * Since data transfer to the first LED may fail,
+   * the same output process is repeated.
+   */
+  NeoPixel_Send(pattern);
+  HAL_Delay(10);
   NeoPixel_Send(pattern);
 }
 
@@ -152,12 +173,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart_arg) {
       color_green.b = rx_buf[3];
       break;
     case COMMAND_ILLUMINANCE:
-      illuminance_uart = 0;
-      illuminance_uart += (rx_buf[1] << 8) + rx_buf[2];
+      illuminance = 0;
+      illuminance += (rx_buf[1] << 8) + rx_buf[2];
       break;
     case COMMAND_ID:
-      ID_uart = rx_buf[1];
-      color_uart = rx_buf[2];
+      ID = rx_buf[1];
+      color = rx_buf[2];
       break;
     default:
       break;
