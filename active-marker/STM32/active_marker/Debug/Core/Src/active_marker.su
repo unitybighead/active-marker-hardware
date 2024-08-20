@@ -1,0 +1,9 @@
+../Core/Src/active_marker.c:66:6:HAL_GPIO_EXTI_Callback	16	static
+../Core/Src/active_marker.c:95:5:getMode	8	static
+../Core/Src/active_marker.c:99:9:getID	4	static
+../Core/Src/active_marker.c:103:6:getColor	4	static
+../Core/Src/active_marker.c:107:6:setIDSwitch	8	static
+../Core/Src/active_marker.c:116:6:setColorSwitch	8	static
+../Core/Src/active_marker.c:124:6:setPattern	32	static
+../Core/Src/active_marker.c:147:6:Uart_Init	16	static
+../Core/Src/active_marker.c:152:6:HAL_UART_RxCpltCallback	16	static
