@@ -136,14 +136,13 @@ void setPattern(uint8_t ID, uint8_t color) {
   } else {
     pattern[2] = color_yellow;
   }
-
   /*
    * Since data transfer to the first LED may fail,
    * the same output process is repeated.
    */
   NeoPixel_Send(pattern);
-//  HAL_Delay(10);
-//  NeoPixel_Send(pattern);
+  HAL_Delay(10);
+  NeoPixel_Send(pattern);
 }
 
 //--------------------------------------------

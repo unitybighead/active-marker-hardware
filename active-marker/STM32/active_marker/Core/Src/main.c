@@ -121,8 +121,8 @@ int main(void)
 //setup cycle
   float *cycle_basis = calloc(CYCLE_LAST, sizeof(float));
   uint32_t *cycle_old = calloc(CYCLE_LAST, sizeof(uint32_t));
-  cycle_basis[CYCLE_MAIN] = 50;
-  cycle_basis[CYCLE_PATTERN] = 200;
+  cycle_basis[CYCLE_MAIN] = 20;
+  cycle_basis[CYCLE_PATTERN] = 50;
 //  cycle_basis[CYCLE_SENSOR] = VEML6030_getIntTime(SENS_ADDR_0);
   /* USER CODE END 2 */
 
@@ -367,10 +367,10 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 38400;
-  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_9B;
   huart1.Init.StopBits = UART_STOPBITS_1;
-  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Parity = UART_PARITY_ODD;
   huart1.Init.Mode = UART_MODE_TX_RX;
   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   huart1.Init.OverSampling = UART_OVERSAMPLING_16;

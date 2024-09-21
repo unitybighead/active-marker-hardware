@@ -5,6 +5,6 @@
 ../Core/Src/active_marker.c:111:6:setIDSwitch	8	static
 ../Core/Src/active_marker.c:120:6:setColorSwitch	8	static
 ../Core/Src/active_marker.c:128:6:setPattern	32	static
-../Core/Src/active_marker.c:152:6:Uart_Init	16	static
-../Core/Src/active_marker.c:157:6:Uart_checkReset	8	static
-../Core/Src/active_marker.c:163:6:HAL_UART_RxCpltCallback	16	static
+../Core/Src/active_marker.c:151:6:Uart_Init	16	static
+../Core/Src/active_marker.c:156:6:Uart_checkReset	8	static
+../Core/Src/active_marker.c:162:6:HAL_UART_RxCpltCallback	16	static
