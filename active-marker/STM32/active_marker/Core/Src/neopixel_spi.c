@@ -34,8 +34,8 @@ void NeoPixel_FullBright() {
 
 void NeoPixel_Send(RGB RGB_buf[]) {
 
-  uint8_t *send_buf = (uint8_t*) calloc(sizeof(uint8_t), N * 24);
-  NeoPixel_Serialize(RGB_buf, send_buf);
+  uint8_t *send_buf = (uint8_t*) calloc(sizeof(uint8_t), N * 24 + 1);
+  NeoPixel_Serialize(RGB_buf, send_buf+1);
   NeoPixel_Reset();
   HAL_Delay(10);
   HAL_SPI_Transmit_DMA(hspi, send_buf, N * 24);

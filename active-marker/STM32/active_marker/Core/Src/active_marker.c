@@ -5,6 +5,7 @@
  *      Author: harub
  */
 #include "active_marker.h"
+#include <core_cm4.h>
 
 static RGB color_blue = { 0, 0, 255 };
 static RGB color_yellow = { 255, 255, 0 };
@@ -49,13 +50,16 @@ static const DotPattern PATTERN_14 = { &color_pink, &color_green, &color_green,
     &color_green };
 static const DotPattern PATTERN_15 = { &color_pink, &color_pink, &color_pink,
     &color_green };
+static const DotPattern PATTERN_16 = { &color_pink, &color_green, &color_blue,
+    &color_yellow };
 
-static const DotPattern *PATTERN_ADDR[16] = { &PATTERN_0, &PATTERN_1,
+static const DotPattern *PATTERN_ADDR[17] = { &PATTERN_0, &PATTERN_1,
     &PATTERN_2, &PATTERN_3, &PATTERN_4, &PATTERN_5, &PATTERN_6, &PATTERN_7,
     &PATTERN_8, &PATTERN_9, &PATTERN_10, &PATTERN_11, &PATTERN_12, &PATTERN_13,
-    &PATTERN_14, &PATTERN_15 };
+    &PATTERN_14, &PATTERN_15, &PATTERN_16 };
 
 // UART
+static bool uart_first_received = false;
 static UART_HandleTypeDef *huart;
 static uint8_t rx_buf[8];
 static const int msg_size = 8;
@@ -132,13 +136,14 @@ void setPattern(uint8_t ID, uint8_t color) {
   } else {
     pattern[2] = color_yellow;
   }
+
   /*
    * Since data transfer to the first LED may fail,
    * the same output process is repeated.
    */
   NeoPixel_Send(pattern);
-  HAL_Delay(10);
-  NeoPixel_Send(pattern);
+//  HAL_Delay(10);
+//  NeoPixel_Send(pattern);
 }
 
 //--------------------------------------------
@@ -149,8 +154,15 @@ void Uart_Init(UART_HandleTypeDef *huart_arg) {
   HAL_UART_Receive_IT(huart, rx_buf, msg_size);
 }
 
+void Uart_checkReset() {
+  if (getMode() == MODE_UART && !uart_first_received && uwTick > 3000) {
+    HAL_NVIC_SystemReset();
+  }
+}
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart_arg) {
   if (huart_arg == huart && getMode() == MODE_UART) {
+    uart_first_received = true;
     switch (rx_buf[0]) {
     case COMMAND_BLUE:
       color_blue.r = rx_buf[1];

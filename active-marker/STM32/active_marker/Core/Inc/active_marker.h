@@ -43,6 +43,7 @@ void setColorSwitch(void);
 void setPattern(uint8_t ID, uint8_t color);
 
 void Uart_Init(UART_HandleTypeDef *huart);
+void Uart_checkReset();
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart_arg);
 
 #endif /* INC_ACTIVE_MARKER_H_ */

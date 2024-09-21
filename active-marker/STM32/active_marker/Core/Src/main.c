@@ -138,6 +138,7 @@ int main(void)
     while (!CycleController(CYCLE_MAIN, cycle_basis, cycle_old)) {
       HAL_Delay(1);
     }
+    Uart_checkReset();
     HAL_IWDG_Refresh(&hiwdg);
     /* USER CODE END WHILE */
 
