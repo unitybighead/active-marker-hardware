@@ -1,6 +1,6 @@
 {
   "board": {
-    "active_layer": 31,
+    "active_layer": 37,
     "active_layer_preset": "",
     "auto_track_width": false,
     "hidden_nets": [],
@@ -62,11 +62,11 @@
       35,
       36
     ],
-    "visible_layers": "ffcfcfc_ffffffff",
-    "zone_display_mode": 1
+    "visible_layers": "ffbffff_ffffffff",
+    "zone_display_mode": 0
   },
   "meta": {
-    "filename": "active-marker-pcb.kicad_prl",
+    "filename": "1655.kicad_prl",
     "version": 3
   },
   "project": {
