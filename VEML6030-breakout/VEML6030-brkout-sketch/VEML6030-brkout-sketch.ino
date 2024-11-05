@@ -29,8 +29,8 @@ void M5setup() {
   M5.Lcd.setTextFont(2);
 }
 
-void lcd_print(uint8_t cursor, String str){
-  M5.Lcd.setCursor(0,cursor);
+void lcd_print(uint8_t cursor, String str) {
+  M5.Lcd.setCursor(0, cursor);
   M5.Lcd.print(str);
 }
 
@@ -39,14 +39,11 @@ VEML6030 VEML;
 void setup() {
   M5setup();
   udp_setup();
-  if(udp_is_enable()){
-    M5.Lcd.fillScreen(TFT_DARKCYAN);
-  }
   if (VEML.begin(SENSOR_ADDR, 0, 26)) {
-    lcd_print(20,"I2C setup error!");
+    lcd_print(20, "I2C setup error!");
   }
-  lcd_print(0,"Illuminance Sensor");
-  lcd_print(40,"Illuminance [lx]");
+  lcd_print(0, "Illuminance Sensor");
+  lcd_print(40, "Illuminance [lx]");
 }
 
 void loop() {
@@ -57,17 +54,12 @@ void loop() {
   float lux = VEML.GetLux();
   M5.Lcd.printf("%4.2f\n", lux);
 
-  uint8_t lux_data[2]={0};
+  uint8_t lux_data[2] = { 0 };
   lux_data[0] = (uint8_t)((uint16_t)lux & 0xFF);
   lux_data[1] = (uint8_t)(((uint16_t)lux >> 8) & 0xFF);
-  udp_array_write(sizeof(lux_data),lux_data);
+  udp_array_write(sizeof(lux_data), lux_data);
 
-  M5.Lcd.setCursor(100,20);
-  M5.Lcd.println(lux_data[0]);
-  M5.Lcd.setCursor(100,40);
-  M5.Lcd.println(lux_data[1]);
-
-  if (M5.BtnA.pressedFor(1000)) {
+  if (M5.BtnA.pressedFor(300)) {
     //reboot after one second;
     M5.Lcd.setCursor(100, 60);
     M5.Lcd.printf("Reset");
