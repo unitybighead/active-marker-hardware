@@ -112,7 +112,7 @@ int main(void)
   MX_I2C1_Init();
   MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
-//  VEML6030_init(&hi2c1, SENS_ADDR_0);
+  VEML6030_init(&hi2c1, SENS_ADDR_0);
 //  VEML6030_init(&hi2c1, SENS_ADDR_1);
   NeoPixel_Init(&hspi1);
   Uart_Init(&huart1);
@@ -123,7 +123,7 @@ int main(void)
   uint32_t *cycle_old = calloc(CYCLE_LAST, sizeof(uint32_t));
   cycle_basis[CYCLE_MAIN] = 20;
   cycle_basis[CYCLE_PATTERN] = 50;
-//  cycle_basis[CYCLE_SENSOR] = VEML6030_getIntTime(SENS_ADDR_0);
+  cycle_basis[CYCLE_SENSOR] = VEML6030_getIntTime(SENS_ADDR_0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -133,6 +133,15 @@ int main(void)
     color = getColor();
     if (CycleController(CYCLE_PATTERN, cycle_basis, cycle_old)) {
       setPattern(ID, color);
+    }
+
+    if(CycleController(CYCLE_SENSOR, cycle_basis, cycle_old)){
+      uint16_t lux = (uint16_t)VEML6030_getLux(SENS_ADDR_0);
+      uint8_t data[8] = {};
+      data[0] = COMMAND_ILLUMINANCE;
+      data[1] = lux & 0xFF;
+      data[2] = lux >> 8;
+      HAL_UART_Transmit(&huart1, data, 8, 10);
     }
 
     while (!CycleController(CYCLE_MAIN, cycle_basis, cycle_old)) {
