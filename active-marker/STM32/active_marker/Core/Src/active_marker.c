@@ -7,10 +7,10 @@
 #include "active_marker.h"
 #include <core_cm4.h>
 
-static RGB color_blue = { 0, 0, 255 };
-static RGB color_yellow = { 255, 255, 0 };
-static RGB color_pink = { 255, 0, 0 };
-static RGB color_green = { 0, 255, 0 };
+static RGB color_blue = { 0, 0, 100 };
+static RGB color_yellow = { 125, 125, 0 };
+static RGB color_pink = { 100, 0, 15 };
+static RGB color_green = { 0, 125, 0 };
 
 /*color define {R,G,B}
  * 0     3
