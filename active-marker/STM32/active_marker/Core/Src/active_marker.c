@@ -145,6 +145,20 @@ void setPattern(uint8_t ID, uint8_t color) {
   NeoPixel_Send(pattern);
 }
 
+void getPatternColor(RGB* blue,RGB* yellow,RGB* pink,RGB* green){
+  *blue = color_blue;
+  *yellow = color_yellow;
+  *pink = color_pink;
+  *green = color_green;
+}
+
+void setPatternColor(RGB blue,RGB yellow,RGB pink,RGB green){
+  color_blue = blue;
+  color_yellow = yellow;
+  color_pink = pink;
+  color_green = green;
+}
+
 //--------------------------------------------
 // UART
 
