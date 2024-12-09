@@ -41,6 +41,7 @@ bool getColor(void);
 void setIDSwitch(void);
 void setColorSwitch(void);
 void setPattern(uint8_t ID, uint8_t color);
+void setColorConfig(uint8_t color_command,RGB data);
 
 void Uart_Init(UART_HandleTypeDef *huart);
 void Uart_checkReset();
