@@ -10,7 +10,9 @@ They are used as the four outer markers to identify the ID.
 
 ## 1655center
 
-They are used as the center marker to identify team color.
+They are used as the center marker to identify team color.  
+In the experiments, the smaller one is used.  
+<img width="200" alt="image" src="https://github.com/user-attachments/assets/c16f26de-5204-41db-9ee9-dbe7653fd7e7" />
 
 ## 3484, 1655single
 They didn't emit enough light to be used as markers, so they ended up not being used. They are left here for future reference.
