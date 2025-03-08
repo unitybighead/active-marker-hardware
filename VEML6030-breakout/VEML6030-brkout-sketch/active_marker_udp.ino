@@ -6,13 +6,13 @@
 
 #define UDP_TIMEOUT 10000
 
-const char ssid[] = "Finch";     //WiFIのSSIDを入力
-const char pass[] = "04240424";  // WiFiのパスワードを入力
+const char ssid[] = "SSID";
+const char pass[] = "password";
 
 WiFiUDP wifiUdp;
-const char* pc_addr = "172.20.10.13";  //"192.168.0.6";
-const int pc_port = 50007;             //送信先のポート
-const int my_port = 50008;             //自身のポート
+const char* pc_addr = "172.20.10.13";
+const int pc_port = 50007;
+const int my_port = 50008;
 
 static bool udp_enable = false;
 void udp_setup() {
